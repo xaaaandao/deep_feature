@@ -1,1 +1,4 @@
 *.npy
+*.npz
+dataset/
+imgs_sliced/
