@@ -1,3 +1,5 @@
+import cv2
+from PIL import Image
 import click
 import glob
 import math
@@ -5,13 +7,13 @@ import numpy as np
 import os
 import tensorflow as tf
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 def next_patch(spec, n):
-    step = math.floor(spec.shape[0] / n)
+    step = math.floor(spec.shape[1] / n)
     for i in range(n):
-        yield spec[i * step:(i + 1) * step, :, :]
+        yield spec[:, i * step:(i + 1) * step, :]
 
 
 def get_model(model, **kwargs):
@@ -32,7 +34,7 @@ def extract_features(model_name, patches, folds, spec_height, spec_width, input_
         print("Slicing images into %d non-overlapping patches..." % (n_patches))
         tf.keras.backend.clear_session()
 
-        input_shape = (math.floor(spec_height / n_patches), spec_width, 3)
+        input_shape = (spec_height, math.floor(spec_width / n_patches), 3)
 
         model, preprocess_input = get_model(model_name, weights='imagenet', include_top=False,
                                             input_shape=input_shape, pooling='avg')

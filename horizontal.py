@@ -5,13 +5,13 @@ import numpy as np
 import os
 import tensorflow as tf
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 def next_patch(spec, n):
-    step = math.floor(spec.shape[1] / n)
+    step = math.floor(spec.shape[0] / n)
     for i in range(n):
-        yield spec[:, i * step:(i + 1) * step, :]
+        yield spec[i * step:(i + 1) * step, :, :]
 
 
 def get_model(model, **kwargs):
@@ -32,11 +32,12 @@ def extract_features(model_name, patches, folds, spec_height, spec_width, input_
         print("Slicing images into %d non-overlapping patches..." % (n_patches))
         tf.keras.backend.clear_session()
 
-        input_shape = (spec_height, math.floor(spec_width / n_patches), 3)
+        input_shape = (math.floor(spec_height / n_patches), spec_width, 3)
 
         model, preprocess_input = get_model(model_name, weights='imagenet', include_top=False,
                                             input_shape=input_shape, pooling='avg')
 
+        imgs_sliced = []
         for fold in folds:
             print("Extracting features for fold %d..." % (fold))
             if len(glob.glob(input_path_proto % (fold))) == 0:
@@ -48,6 +49,7 @@ def extract_features(model_name, patches, folds, spec_height, spec_width, input_
                 spec = tf.keras.preprocessing.image.img_to_array(img)
                 for p in next_patch(spec, n_patches):
                     p = preprocess_input(p)
+                    imgs_sliced.append(tf.keras.preprocessing.image.array_to_img(p))
                     p = np.expand_dims(p, axis=0)
                     features.append(model.predict(p))
 
@@ -55,7 +57,8 @@ def extract_features(model_name, patches, folds, spec_height, spec_width, input_
             output_filename = output_proto % (fold, n_patches)
             np.save(output_filename, features)
             print(output_filename, features.shape)
-
+        # for i, img in enumerate(imgs_sliced):
+        #     tf.keras.preprocessing.image.save_img(f'{i}.png', img)
 
 @click.command()
 @click.option(
