@@ -1,5 +1,3 @@
-import cv2
-from PIL import Image
 import click
 import glob
 import math

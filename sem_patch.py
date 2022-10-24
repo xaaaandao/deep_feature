@@ -28,36 +28,37 @@ def get_model(model, **kwargs):
 
 def extract_features(model_name, patches, folds, spec_height, spec_width, input_path_proto, output_proto, gpuid):
     os.environ["CUDA_VISIBLE_DEVICES"] = str(0)
-    for n_patches in patches:
-        print("Slicing images into %d non-overlapping patches..." % (n_patches))
-        tf.keras.backend.clear_session()
+    # for n_patches in patches:
+    # print("Slicing images into %d non-overlapping patches..." % (n_patches))
+    tf.keras.backend.clear_session()
 
-        input_shape = (math.floor(spec_height / n_patches), spec_width, 3)
+    input_shape = (spec_height, spec_width, 3)
 
-        model, preprocess_input = get_model(model_name, weights='imagenet', include_top=False,
-                                            input_shape=input_shape, pooling='avg')
+    model, preprocess_input = get_model(model_name, weights='imagenet', include_top=False,
+                                        input_shape=input_shape, pooling='avg')
 
-        imgs_sliced = []
-        for fold in folds:
-            print("Extracting features for fold %d..." % (fold))
-            if len(glob.glob(input_path_proto % (fold))) == 0:
-                raise RuntimeError("No files found in: %s" % (input_path_proto % (fold)))
+    # imgs_sliced = []
+    for fold in folds:
+        print("Extracting features for fold %d..." % (fold))
+        if len(glob.glob(input_path_proto % (fold))) == 0:
+            raise RuntimeError("No files found in: %s" % (input_path_proto % (fold)))
 
-            features = []
-            for fname in sorted(glob.glob(input_path_proto % (fold))):
-                print(fname)
-                img = tf.keras.preprocessing.image.load_img(fname)
-                spec = tf.keras.preprocessing.image.img_to_array(img)
-                for p in next_patch(spec, n_patches):
-                    p = preprocess_input(p)
-                    imgs_sliced.append(tf.keras.preprocessing.image.array_to_img(p))
-                    p = np.expand_dims(p, axis=0)
-                    features.append(model.predict(p))
+        features = []
+        for fname in sorted(glob.glob(input_path_proto % (fold))):
+            img = tf.keras.preprocessing.image.load_img(fname)
+            spec = tf.keras.preprocessing.image.img_to_array(img)
+            p = np.expand_dims(spec, axis=0)
+            features.append(model.predict(p))
+            # for p in next_patch(spec, n_patches):
+            #     p = preprocess_input(p)
+            #     imgs_sliced.append(tf.keras.preprocessing.image.array_to_img(p))
+            #     p = np.expand_dims(p, axis=0)
+            #     features.append(model.predict(p))
 
-            features = np.concatenate(features)
-            output_filename = output_proto % (fold, n_patches)
-            np.save(output_filename, features)
-            print(output_filename, features.shape)
+        features = np.concatenate(features)
+        output_filename = output_proto % (fold, 1)
+        np.save(output_filename, features)
+        print(output_filename, features.shape)
         # for i, img in enumerate(imgs_sliced):
         #     tf.keras.preprocessing.image.save_img(f'{i}.png', img)
 
