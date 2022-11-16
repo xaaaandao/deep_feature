@@ -20,3 +20,15 @@ d
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 V
 &iwssip/horizontal-patch=3-grayscale.sh,1/3/13e8b1cf8c3dc4f6fd71990e8bb608004d08449c
+P
+ iwssip/horizontal-patch=3-rgb.sh,4/9/49f77e12af98e26e5d0f2e4b30ac7555f7c8b708
+P
+ iwssip/none-patch=1-grayscale.sh,4/2/42c5e8b5d3fe3bb8cfad92058ee6122251be9dba
+J
+iwssip/none-patch=1-rgb.sh,0/8/083e4c0255d68254b7cedaab9f8f1a9f72d052e8
+=
+horizontal.py,a/f/afa45e961e1f853bb0dda0496de413b7241ad1ca
+<
+rename.ipynb,1/f/1f979ebffce2fa4936dd09e3a8822d4e142ac5ee
+9
+	script.sh,0/3/0329d79171f0f92caecdb36bd26a669696d1042b
