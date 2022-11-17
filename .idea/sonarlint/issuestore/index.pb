@@ -26,9 +26,3 @@ P
  iwssip/none-patch=1-grayscale.sh,4/2/42c5e8b5d3fe3bb8cfad92058ee6122251be9dba
 J
 iwssip/none-patch=1-rgb.sh,0/8/083e4c0255d68254b7cedaab9f8f1a9f72d052e8
-=
-horizontal.py,a/f/afa45e961e1f853bb0dda0496de413b7241ad1ca
-<
-rename.ipynb,1/f/1f979ebffce2fa4936dd09e3a8822d4e142ac5ee
-9
-	script.sh,0/3/0329d79171f0f92caecdb36bd26a669696d1042b
