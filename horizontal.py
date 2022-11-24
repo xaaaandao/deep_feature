@@ -5,6 +5,7 @@ import numpy as np
 import os
 import tensorflow as tf
 
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
@@ -129,7 +130,6 @@ def main(model, patches, folds, height, width, input_file_format_string, output_
     print("Format string for input: %s " % (input_file_format_string))
     print("Format string for output: %s " % (output_file_format_string))
     print("GPU ID: %d" % (gpuid))
-    print("")
 
     extract_features(model, patches, folds, height, width,
                      input_file_format_string, output_file_format_string, gpuid)

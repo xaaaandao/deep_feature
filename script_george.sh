@@ -1,64 +1,32 @@
 #!/bin/bash
 
+function runtest {
+	p=$1
+	extractor=$2
+	threshold=$3
+	n_folds=$4
+	color=$5
+	image_size=$6
+	taxon=$7
+	if [ $p -eq 1 ]
+	then
+		echo "$p" "$extractor" "$threshold" "$n_folds" "$color" "$image_size" "$taxon"
+		python horizontal.py --model $extractor --folds $n_folds --patches $p --width $image_size --height $image_size -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/$color/$taxon/$image_size/$threshold/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/$color/segmented_unet/$image_size/patch=$p/$taxon/$threshold/$extractor/fold-%d_patches-%d.npy
+    else
+    	echo "$p" "$extractor" "$threshold" "$n_folds" "$color" "$image_size" "$taxon"
+    	python horizontal.py --model $extractor --folds $n_folds --patches $p --width $image_size --height $image_size -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/$color/$taxon/$image_size/$threshold/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/$color/segmented_unet/$image_size/patch=$p/$taxon/$threshold/$extractor/horizontal/fold-%d_patches-%d.npy
+	fi
+}
+
+
 # specific epithet (> 5)
 for m in mobilenetv2 resnet50v2 vgg16; do
-    for res in 256 400 512; do
-    	for patch in 1 3; do
+    for size in 256 400 512; do
+    	for patch in 1; do
     		for color in RGB grayscale; do
-    			if [ ${patch} -eq 1 ]
-    			then
-    				python horizontal.py --model ${m} --folds 55 --patches ${patch} --width ${res} --height ${res} -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/${color}/specific_epithet/${res}/5/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/${color}/segmented_unet/${res}/patch=${patch}/specific_epithet/5/${m}/fold-%d_patches-%d.npy
-    			else
-    				python horizontal.py --model ${m} --folds 55 --patches ${patch} --width ${res} --height ${res} -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/${color}/specific_epithet/${res}/5/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/${color}/segmented_unet/${res}/patch=${patch}/specific_epithet/5/${m}/horizontal/fold-%d_patches-%d.npy
-    			fi
-    		done
-    	done
-    done
-done
-
-# specific epithet (> 10)
-for m in mobilenetv2 resnet50v2 vgg16; do
-    for res in 256 400 512; do
-    	for patch in 1 3; do
-    		for color in RGB grayscale; do
-    			if [ ${patch} -eq 1 ]
-    			then
-    				python horizontal.py --model ${m} --folds 34 --patches ${patch} --width ${res} --height ${res} -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/${color}/specific_epithet/${res}/10/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/${color}/segmented_unet/${res}/patch=${patch}/specific_epithet/10/${m}/fold-%d_patches-%d.npy
-    			else
-    				python horizontal.py --model ${m} --folds 34 --patches ${patch} --width ${res} --height ${res} -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/${color}/specific_epithet/${res}/10/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/${color}/segmented_unet/${res}/patch=${patch}/specific_epithet/10/${m}/horizontal/fold-%d_patches-%d.npy
-    			fi
-    		done
-    	done
-    done
-done
-
-# specific epithet (> 20)
-for m in mobilenetv2 resnet50v2 vgg16; do
-    for res in 256 400 512; do
-    	for patch in 1 3; do
-    		for color in RGB grayscale; do
-    			if [ ${patch} -eq 1 ]
-    			then
-    				python horizontal.py --model ${m} --folds 20 --patches ${patch} --width ${res} --height ${res} -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/${color}/specific_epithet/${res}/20/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/${color}/segmented_unet/${res}/patch=${patch}/specific_epithet/20/${m}/fold-%d_patches-%d.npy
-    			else
-    				python horizontal.py --model ${m} --folds 20 --patches ${patch} --width ${res} --height ${res} -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/${color}/specific_epithet/${res}/20/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/${color}/segmented_unet/${res}/patch=${patch}/specific_epithet/20/${m}/horizontal/fold-%d_patches-%d.npy
-    			fi
-    		done
-    	done
-    done
-done
-
-# genus (>2)
-for m in mobilenetv2 resnet50v2 vgg16; do
-    for res in 256 400 512; do
-    	for patch in 1 3; do
-    		for color in RGB grayscale; do
-    			if [ ${patch} -eq 1 ]
-    			then
-    				python horizontal.py --model ${m} --folds 2 --patches ${patch} --width ${res} --height ${res} -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/${color}/genus/${res}/2/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/${color}/segmented_unet/${res}/patch=${patch}/genus/2/${m}/fold-%d_patches-%d.npy
-    			else
-    				python horizontal.py --model ${m} --folds 2 --patches ${patch} --width ${res} --height ${res} -i /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/imagens/${color}/genus/${res}/2/f%d/w_pred_mask/*.jpeg -o /home/xandao/Documentos/GitHub/dataset_gimp/imagens_george/features/${color}/segmented_unet/${res}/patch=${patch}/genus/2/${m}/horizontal/fold-%d_patches-%d.npy
-    			fi
+				runtest ${patch} ${m} 5 55 ${color} ${size} "specific_epithet"
+				runtest ${patch} ${m} 10 34 ${color} ${size} "specific_epithet"
+				runtest ${patch} ${m} 20 20 ${color} ${size} "specific_epithet"
     		done
     	done
     done
