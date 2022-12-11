@@ -26,3 +26,13 @@ P
  iwssip/none-patch=1-grayscale.sh,4/2/42c5e8b5d3fe3bb8cfad92058ee6122251be9dba
 J
 iwssip/none-patch=1-rgb.sh,0/8/083e4c0255d68254b7cedaab9f8f1a9f72d052e8
+<
+script_sp.sh,f/3/f33d12f28b4fffbf9c3535927ff3ee04fd83cfe2
+@
+script_george.sh,c/2/c2258801b588f6ba8dd7ae23b58b99395a157a24
+=
+horizontal.py,a/f/afa45e961e1f853bb0dda0496de413b7241ad1ca
+<
+rename.ipynb,1/f/1f979ebffce2fa4936dd09e3a8822d4e142ac5ee
+<
+script_br.sh,a/1/a1453f4f966c9dc3211fe0a3b7b92b689b9d65cd
